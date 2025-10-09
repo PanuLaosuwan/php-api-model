@@ -61,15 +61,7 @@ if (($handle = fopen($NWPFile, "r")) !== false) {
         }
     }
 }
-/*
-if (($handle = fopen($NWPFile, "r")) !== false) {
-    $headers = fgetcsv($handle); // อ่านบรรทัดแรกเป็นหัวคอลัมน์
-    while (($data = fgetcsv($handle)) !== false) {
-        $rows[] = array_combine($headers, $data);
-    }
-    fclose($handle);
-}
-*/
+
 echo json_encode([
     "status" => "success",
     //"count" => count($result),
