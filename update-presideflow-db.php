@@ -1,5 +1,6 @@
 <?php
 header("Content-Type: application/json; charset=UTF-8");
+include 'mysqldb.php';
 
 function normalizeDate($input) {
     try {
@@ -71,9 +72,23 @@ if (($handle = fopen($NWPFile, "r")) !== false) {
         }
     }
 }
+if ($conn->query("TRUNCATE presideflow") === TRUE) {
+    $stmt = $conn->prepare("INSERT INTO presideflow (stamp_date, pre_date, station, source, pred_sf_value) VALUES (CURRENT_TIMESTAMP(), ?, ?, ?, ?)");
+    $stmt->bind_param("sssd", $pre_date, $station, $source, $pred_sf_value);
 
-echo json_encode([
-    "status" => "success",
-    //"count" => count($result),
-    "data" => $result
-], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    foreach ($result as $item) {
+        $pre_date = $item['date'];
+        $station = $item['station'];
+        $source = $item['source'];
+        $pred_sf_value = $item['pred_sf_value'];
+        $stmt->execute();
+    }
+    $stmt->close();
+}
+else {
+    echo "Error truncating table: " . $conn->error;
+    exit;
+}
+
+$conn->close();
+?>
