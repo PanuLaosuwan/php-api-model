@@ -31,7 +31,7 @@ $date = normalizeDate($date);
 if($station && $source && $date && $duration){
     $start_date = $date;
     $end_date = date('Y-m-d', strtotime($start_date . ' + '.$duration.'  days'));
-    $end_date = date('Y-m-d', strtotime($end_date . ' + 1  days'));
+    //$end_date = date('Y-m-d', strtotime($end_date . ' + 1  days'));
     $start_date = date('Y-m-d', strtotime($start_date . ' - 1 days'));
     $data_sql = 
     "SELECT pre_date as date, station, source, pred_sf_value 
