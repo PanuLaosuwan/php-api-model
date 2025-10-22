@@ -23,23 +23,20 @@ function NoResult($desc){
 
 $station = $_GET['station'] ?? null;
 $source  = $_GET['source']  ?? null;
-$date  = $_GET['date']  ?? null;
-$duration  = $_GET['duration']  ?? null;
+$startdate  = $_GET['startdate']  ?? null;
+$enddate  = $_GET['enddate']  ?? null;
 
-$date = normalizeDate($date);
+$startdate = normalizeDate($startdate);
+$enddate = normalizeDate($enddate);
 
-if($station && $source && $date && $duration){
-    $start_date = $date;
-    $end_date = date('Y-m-d', strtotime($start_date . ' + '.$duration.'  days'));
-    //$end_date = date('Y-m-d', strtotime($end_date . ' + 1  days'));
-    $start_date = date('Y-m-d', strtotime($start_date . ' - 1 days'));
+if($station && $source && $startdate && $enddate){
     $data_sql = 
     "SELECT pre_date as date, station, source, pred_sf_value 
     FROM presideflow_lake 
     WHERE 
     station = '$station' 
     AND source = '$source' 
-    AND stamp_date LIKE '$date%' AND pre_date > '$start_date' AND pre_date < '$end_date'";
+    AND stamp_date LIKE '$date%' AND pre_date >= '$start_date' AND pre_date <= '$end_date'";
     $data_result = $conn->query($data_sql);
     if ($data_result->num_rows > 0) {
         while($data_row = $data_result->fetch_assoc()) {
