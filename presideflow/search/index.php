@@ -36,7 +36,7 @@ if($station && $source && $startdate && $enddate){
     WHERE 
     station = '$station' 
     AND source = '$source' 
-    AND stamp_date LIKE '$date%' AND pre_date >= '$start_date' AND pre_date <= '$end_date'";
+    AND pre_date >= '$startdate' AND pre_date <= '$enddate'";
     $data_result = $conn->query($data_sql);
     if ($data_result->num_rows > 0) {
         while($data_row = $data_result->fetch_assoc()) {

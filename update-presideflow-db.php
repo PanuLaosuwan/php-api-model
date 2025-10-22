@@ -11,19 +11,18 @@ function normalizeDate($input) {
         return null;
     }
 }
-
 $csfv2File = __DIR__ . "/data/Model_Runoff_Sideflow_csfv2.csv";
 $NWPFile = __DIR__ . "/data/Model_Runoff_Sideflow_NWP.csv";
 
 if (!file_exists($csfv2File)) {
     http_response_code(404);
-    echo json_encode(["error" => "File not found"]);
+    echo json_encode(["error" => "File not found csfv2"]);
     exit;
 }
 
 if (!file_exists($NWPFile)) {
     http_response_code(404);
-    echo json_encode(["error" => "File not found"]);
+    echo json_encode(["error" => "File not found NWP"]);
     exit;
 }
 
@@ -42,7 +41,7 @@ if (($handle = fopen($csfv2File, "r")) !== false) {
     for($i = 4; $i < count($rows); $i++){
         $cnt = 0;
         foreach ($rows[$i] as $key => $val){
-            if($cnt == 0) $date = normalizeDate($val);
+            if($cnt == 0) $date = normalizeDate(substr($val, 1));
             else{
                 $result[] = array_combine($indexName, array($date, $key, "HM-CFSV2", $val));
             }
@@ -64,7 +63,7 @@ if (($handle = fopen($NWPFile, "r")) !== false) {
     for($i = 4; $i < count($rows); $i++){
         $cnt = 0;
         foreach ($rows[$i] as $key => $val){
-            if($cnt == 0) $date = normalizeDate($val);
+            if($cnt == 0) $date = normalizeDate(substr($val, 1));
             else{
                 $result[] = array_combine($indexName, array($date, $key, "HM-NWP", $val));
             }
